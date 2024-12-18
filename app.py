@@ -20,7 +20,7 @@ app = Flask(__name__)
 app.config['SECRET_KEY'] = 'my super secret key'
 
 # MySQL database configuration
-app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+mysqlconnector://root:11Oval11@localhost/flask_api_db'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+mysqlconnector://root:<password>@localhost/flask_api_db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 #Creating our Base Model
@@ -154,8 +154,7 @@ def login():
     return jsonify({"message": f"Couldn't verify password"}), 403
 
 @app.route('/users', methods=['POST'])
-@token_required
-def create_user(current_user):
+def create_user():
     try:
         user_data = user_schema.load(request.json)
     except ValidationError as e:
@@ -307,7 +306,7 @@ def delete_product(id):
     return jsonify({"message": f"succefully deleted product {id}"}), 200
 
 #  ======== Order Routes ========
-# "order_date": "2021-09-09 15:44:15.81785"
+
 @app.route('/orders', methods=['POST'])
 def create_order():
     try:
